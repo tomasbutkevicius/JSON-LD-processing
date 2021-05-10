@@ -24,21 +24,10 @@ const doc =
     "proof": {
     }
 };
-const context = {
-    "name": "https://www.w3.org/2018/credentials/v1",
-    "homepage": { "@id": "http://example.edu/credentials/3732", "@type": "@id" }
-};
 
 router.get("/", async (req, res) => {
-    res.send("validate hit");
-    // read from URL
-    jsonld_request('https://www.w3.org/2018/credentials/v1', function (err, res, data) {
-        if(err){
-            console.log(err);
-            return;
-        }
-        console.log(data);
-    });
+    const compacted = await jsonld.compact(doc, {});
+    res.send(JSON.stringify(compacted, null, 2));
 });
 
 module.exports = router;
