@@ -34,8 +34,6 @@ router.get("/compact", async (req, res) => {
 
 router.get("/validate", async (req, res) => {
     const compacted = await jsonld.compact(doc, {});
-
-    // nquads is a string of N-Quads
     console.log("Compacted");
     console.log(compacted);
     console.log("END Compacted");
@@ -45,10 +43,8 @@ router.get("/validate", async (req, res) => {
         .addSchema(await schemaorg.JSONLD_SCHEMA)
         .addSchema(await schemaorg.SCHEMATA);
     schema = await getRequest('https://www.w3.org/2018/credentials/v1');
-    if (schema !== null) {
-        let isValid = ajv.validate(schema, compacted);
-        res.send(isValid);
-    }
+    let isValid = ajv.validate(schema, compacted);
+    res.send(isValid);
 
 });
 
