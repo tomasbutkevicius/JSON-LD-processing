@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const validateJsonldRoute = require('./routes/validateJSONLD');
+const routes = require('./routes/routes');
 
 app.use(express.json());
 app.use(function (req, res, next) {
@@ -10,6 +10,6 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.use("/validate", validateJsonldRoute);
+app.use("/", routes);
 
 module.exports = app;
