@@ -23,21 +23,12 @@ const doc =
             "name": "Bachelor of Science and Arts"
         }
     },
-    "proof": {
-        "name": "yes"
-    }
+    "proof": {}
 };
-
-
-const my_schema = {
-    "$schema": "https://www.w3.org/2018/credentials/v1",
-    "$id": "https://www.w3.org/2018/credentials/v1",
-    "title": "Credential Schema"
-}
 
 router.get("/compact", async (req, res) => {
     const compacted = await jsonld.compact(doc, {});
-    res.send(JSON.stringify(compacted, null, 2));
+    res.send(compacted);
 });
 
 
@@ -53,7 +44,7 @@ router.get("/validate", async (req, res) => {
         .addMetaSchema(await schemaorg.META_SCHEMATA)
         .addSchema(await schemaorg.JSONLD_SCHEMA)
         .addSchema(await schemaorg.SCHEMATA);
-    schema = await doRequest('https://www.w3.org/2018/credentials/v1');
+    schema = await getRequest('https://www.w3.org/2018/credentials/v1');
     if (schema !== null) {
         let isValid = ajv.validate(schema, compacted);
         res.send(isValid);
@@ -61,7 +52,7 @@ router.get("/validate", async (req, res) => {
 
 });
 
-function doRequest(url) {
+function getRequest(url) {
     return new Promise(function (resolve, reject) {
         jsonld_request(url, function (error, res, body) {
         if (!error && res.statusCode == 200) {
